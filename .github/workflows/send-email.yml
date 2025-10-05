@@ -1,0 +1,14 @@
+# partial snippet from workflow step
+- name: Send email (run mailer)
+  env:
+    SMTP_HOST: ${{ secrets.SMTP_HOST }}    # smtp.gmail.com
+    SMTP_PORT: ${{ secrets.SMTP_PORT }}    # 465
+    SMTP_USER: ${{ secrets.SMTP_USER }}    # yourname@gmail.com
+    SMTP_PASS: ${{ secrets.SMTP_PASS }}    # the app password (store as secret)
+    SMTP_SECURE: ${{ secrets.SMTP_SECURE }} # true
+    FROM_EMAIL: ${{ secrets.FROM_EMAIL }}
+    FROM_NAME: ${{ secrets.FROM_NAME }}
+    TO_EMAIL: ${{ secrets.TO_EMAIL }}
+    RECIPIENTS_FILE: ${{ secrets.RECIPIENTS_FILE }}
+    ...
+  run: node src/send-email.js

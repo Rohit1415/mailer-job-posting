@@ -1,0 +1,114 @@
+<!-- src/mailer/templates/job-application.ejs -->
+<div
+  style="
+    max-width: 650px;
+    margin: 0 auto;
+    background-color: #f9fbfd;
+    border: 1px solid #e6eef8;
+    border-radius: 8px;
+    padding: 22px;
+    font-family: Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+    color: #1f2937;
+    line-height: 1.55;
+  "
+>
+  <div
+    style="
+      border-bottom: 2px solid #e6eef8;
+      padding-bottom: 10px;
+      margin-bottom: 18px;
+    "
+  >
+    <h2 style="margin: 0; color: #0f1724">
+      Application for Frontend Engineer / React Developer
+    </h2>
+  </div>
+
+  <p>Dear <strong><%= hiringManagerName || 'Hiring Manager' %></strong>,</p>
+
+  <p>
+    My name is <strong><%= senderName %></strong>. I am currently a
+    <strong><%= currentRole %></strong> with over
+    <strong><%= experienceYears %> years</strong> of experience in
+    <strong>React.js</strong> and modern frontend technologies. I lead a team of
+    <strong><%= teamSize %></strong> engineers and manage full project
+    lifecycles — from architecture and wireframing to deployment.
+  </p>
+
+  <p>
+    I specialize in
+    <strong
+      >developing, deploying, and designing scalable web applications</strong
+    >. I manage the entire process from app wireframes to production deployment,
+    including tech requirements, client requests, and cross-functional
+    coordination.
+  </p>
+
+  <div
+    style="
+      background-color: #eef7ff;
+      padding: 14px;
+      border-radius: 6px;
+      margin: 18px 0;
+    "
+  >
+    <p style="margin: 0 0 8px 0; font-weight: 600; color: #0f1724">
+      Key Highlights:
+    </p>
+    <ul style="margin: 0; padding-left: 18px; color: #0f1724">
+      <li>
+        <strong>Experience:</strong> <%= experienceYears %> years (React.js, JS,
+        Frontend Architecture)
+      </li>
+      <li><strong>Current Role:</strong> <%= currentRole %></li>
+      <li>
+        <strong>Key Skills:</strong> React, Redux, Next.js, REST APIs, System
+        Design, UI/UX Collaboration
+      </li>
+      <li><strong>Current CTC:</strong> <%= currentCtc %></li>
+      <li><strong>Expected CTC:</strong> <%= expectedCtc %></li>
+      <li><strong>Notice Period:</strong> <%= noticePeriod %></li>
+    </ul>
+  </div>
+
+  <p>
+    I take ownership end-to-end — from client requirements and wireframes to
+    production-ready deployments.
+  </p>
+
+  <p>
+    You can review my work and background here:<br />
+    🌐
+    <a href="<%= portfolioUrl %>" style="color: #2563eb; text-decoration: none"
+      ><%= portfolioUrl %></a
+    >
+    | 💼
+    <a href="<%= linkedInUrl %>" style="color: #2563eb; text-decoration: none"
+      ><%= linkedInUrl %></a
+    >
+  </p>
+
+  <p>
+    Thank you for your time and consideration. I look forward to hearing from
+    you.
+  </p>
+
+  <div
+    style="border-top: 1px solid #e6eef8; margin-top: 18px; padding-top: 12px"
+  >
+    <p style="margin: 0">
+      Warm regards,<br />
+      <strong style="font-size: 15px"><%= senderName %></strong><br />
+      📞
+      <a href="tel:<%= phone %>" style="color: #2563eb; text-decoration: none"
+        ><%= phone %></a
+      ><br />
+      📧
+      <a
+        href="mailto:<%= senderEmail %>"
+        style="color: #2563eb; text-decoration: none"
+        ><%= senderEmail %></a
+      >
+    </p>
+  </div>
+</div>

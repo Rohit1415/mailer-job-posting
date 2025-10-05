@@ -1,0 +1,18 @@
+{
+  "name": "job-mailer",
+  "version": "1.0.0",
+  "main": "src/send-email.js",
+  "scripts": {
+    "send-email": "node src/send-email.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.6.1",
+    "ejs": "^3.1.10",
+    "nodemailer": "^6.10.1"
+  },
+  "description": "",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
+}

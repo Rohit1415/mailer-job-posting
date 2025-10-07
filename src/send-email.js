@@ -24,11 +24,13 @@ function parseRecipientsFromTxt(filePath) {
       teamSize: 10,
       currentCtc: "₹4.8 LPA",
       expectedCtc: "₹8 LPA",
-      noticePeriod: "1 month (flexible)",
+      noticePeriod: "10 days (flexible)",
       portfolioUrl: process.env.PORTFOLIO_URL,
       linkedInUrl: process.env.LINKEDIN_URL,
       phone: process.env.SENDER_PHONE,
       senderEmail: process.env.FROM_EMAIL,
+      githubUrl: process.env.GITHUB_URL || "",
+      resumeUrl: process.env.RESUME_URL || "",
     };
 
     // resume (optional)

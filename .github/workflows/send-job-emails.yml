@@ -1,0 +1,81 @@
+name: Manual — Send Job Application Emails
+
+# Manual trigger only
+on:
+  workflow_dispatch:
+    inputs:
+      recipients_file:
+        description: "Path to recipients file in repo (relative). Use ./src/data/recipients.txt by default"
+        required: false
+        default: "./src/data/recipients.txt"
+      email_subject:
+        description: "Email subject (optional override)"
+        required: false
+        default: "Application for Frontend Engineer / React Developer Role"
+      preview:
+        description: "Preview only? (true = render preview and do NOT send)"
+        required: false
+        default: "false"
+
+concurrency:
+  group: mailer-job-posting
+  cancel-in-progress: true
+
+jobs:
+  send_email:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Ensure recipients file exists
+        run: |
+          echo "Using recipients file: ${{ github.event.inputs.recipients_file }}"
+          if [ ! -f "${{ github.event.inputs.recipients_file }}" ]; then
+            echo "Recipients file not found at path: ${{ github.event.inputs.recipients_file }}"
+            exit 1
+          fi
+
+      - name: Run mailer (send or preview)
+        env:
+          # SMTP / From (set these as repository secrets)
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          SMTP_SECURE: ${{ secrets.SMTP_SECURE }}
+
+          FROM_EMAIL: ${{ secrets.FROM_EMAIL }}
+          FROM_NAME: ${{ secrets.FROM_NAME }}
+
+          # Template / branding
+          PORTFOLIO_URL: ${{ secrets.PORTFOLIO_URL }}
+          LINKEDIN_URL: ${{ secrets.LINKEDIN_URL }}
+          SENDER_PHONE: ${{ secrets.SENDER_PHONE }}
+
+          # Mailer controls (you can also set these as repo secrets)
+          RECIPIENTS_FILE: ${{ github.event.inputs.recipients_file }}
+          EMAIL_SUBJECT: ${{ github.event.inputs.email_subject }}
+          PREVIEW: ${{ github.event.inputs.preview }}
+
+          BATCH_SIZE: ${{ secrets.BATCH_SIZE }}
+          DELAY_MS: ${{ secrets.DELAY_MS }}
+          MAX_RETRIES: ${{ secrets.MAX_RETRIES }}
+          RETRY_DELAY_MS: ${{ secrets.RETRY_DELAY_MS }}
+        run: |
+          echo "PREVIEW = $PREVIEW"
+          # run the node script; it should respect PREVIEW env if implemented
+          node ./src/send-email.js

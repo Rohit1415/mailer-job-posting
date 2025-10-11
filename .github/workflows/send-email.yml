@@ -1,0 +1,36 @@
+name: Scheduled Email Sender
+
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: "0 3 * * *"
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+      - run: npm ci
+      - name: Run send script
+        env:
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          SMTP_SECURE: ${{ secrets.SMTP_SECURE }}
+          FROM_EMAIL: ${{ secrets.FROM_EMAIL }}
+          FROM_NAME: ${{ secrets.FROM_NAME }}
+          RECIPIENTS_FILE: ${{ secrets.RECIPIENTS_FILE }}
+          PORTFOLIO_URL: ${{ secrets.PORTFOLIO_URL }}
+          LINKEDIN_URL: ${{ secrets.LINKEDIN_URL }}
+          SENDER_PHONE: ${{ secrets.SENDER_PHONE }}
+          RESUME_URL: ${{ secrets.RESUME_URL }}
+          DRY_RUN: ${{ secrets.DRY_RUN }}
+          BATCH_SIZE: ${{ secrets.BATCH_SIZE }}
+          DELAY_MS: ${{ secrets.DELAY_MS }}
+          MAX_RETRIES: ${{ secrets.MAX_RETRIES }}
+          RETRY_DELAY_MS: ${{ secrets.RETRY_DELAY_MS }}
+        run: npm run send

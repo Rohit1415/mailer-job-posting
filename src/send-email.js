@@ -1,4 +1,3 @@
-// src/send-email.js
 require("dotenv").config();
 const path = require("path");
 const fs = require("fs");
@@ -15,7 +14,6 @@ function parseRecipientsFromTxt(filePath) {
 
 (async () => {
   try {
-    // base template data
     const templateData = {
       hiringManagerName: "Hiring Manager",
       senderName: "Rohit Bhatu",
@@ -33,30 +31,28 @@ function parseRecipientsFromTxt(filePath) {
       resumeUrl: process.env.RESUME_URL || "",
     };
 
-    // resume (optional)
     const attachments = [];
     const resumePath = path.resolve("./src/assets/rohit-bhatu-resume.pdf");
-    if (fs.existsSync(resumePath)) {
+    if (fs.existsSync(resumePath))
       attachments.push({
         path: resumePath,
         filename: "Rohit-Bhatu-Resume.pdf",
       });
-    }
 
-    // recipients
-    const recipientsFile = process.env.RECIPIENTS_FILE;
+    const recipientsFile =
+      process.env.RECIPIENTS_FILE || "./src/data/recipients.txt";
     if (!fs.existsSync(recipientsFile)) {
-      console.error(`❌ Recipients file not found: ${recipientsFile}`);
+      console.error("Recipients file not found:", recipientsFile);
       process.exit(1);
     }
 
     const recipients = parseRecipientsFromTxt(recipientsFile);
     if (!recipients.length) {
-      console.error("❌ No recipients found in recipients.txt");
+      console.error("No recipients found in recipients.txt");
       process.exit(1);
     }
 
-    console.log(`📨 Sending to ${recipients.length} recipients...`);
+    console.log("Sending to", recipients.length, "recipients");
 
     const results = await sendBulkJobApplications(recipients, {
       templateData,
@@ -67,9 +63,9 @@ function parseRecipientsFromTxt(filePath) {
     const successCount = results.filter((r) => r.success).length;
     const failCount = results.length - successCount;
 
-    console.log(`\n✅ Successfully sent: ${successCount}`);
+    console.log("Successfully sent:", successCount);
     if (failCount > 0) {
-      console.warn(`⚠️ Failed: ${failCount}`);
+      console.warn("Failed:", failCount);
       console.table(
         results
           .filter((r) => !r.success)
@@ -78,7 +74,7 @@ function parseRecipientsFromTxt(filePath) {
     }
     process.exit(0);
   } catch (err) {
-    console.error("❌ Error sending emails:", err);
+    console.error("Error sending emails:", err);
     process.exit(1);
   }
 })();
